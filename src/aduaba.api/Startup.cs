@@ -53,7 +53,7 @@ namespace aduaba.api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider svp)
         {
             if (env.IsDevelopment())
             {
@@ -72,6 +72,14 @@ namespace aduaba.api
             {
                 endpoints.MapControllers();
             });
+
+            MigrateDatabaseContext(svp);
+        }
+
+        public void MigrateDatabaseContext(IServiceProvider svp)
+        {
+            var applicationDbContext = svp.GetRequiredService<ApplicationDbContext>();
+            applicationDbContext.Database.Migrate();
         }
     }
 }
