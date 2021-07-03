@@ -1,4 +1,4 @@
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.Entities.ApplicationEntity;
 
 namespace aduaba.api.Models.Communication
 {

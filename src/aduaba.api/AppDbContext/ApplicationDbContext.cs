@@ -1,7 +1,7 @@
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.Entities.ApplicationEntity;
 using Microsoft.EntityFrameworkCore;
 
-namespace aduaba.data.AppDbContext
+namespace aduaba.api.AppDbContext
 {
     public class ApplicationDbContext : DbContext
     {

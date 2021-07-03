@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using aduaba.api.Interface;
 using aduaba.api.Services;
-using aduaba.data.AppDbContext;
+using aduaba.api.AppDbContext;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -38,11 +38,7 @@ namespace aduaba.api
             });
 
             services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("MyAduabaDb"),
-                sqlServerOptions =>
-                {
-                    sqlServerOptions.MigrationsAssembly("aduaba.data");
-                }
+                Configuration.GetConnectionString("MyAduabaDb")
             ));
 
             //Registering AutoMapper

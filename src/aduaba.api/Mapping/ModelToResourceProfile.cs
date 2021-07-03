@@ -1,5 +1,5 @@
 using aduaba.api.Resource;
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.Entities.ApplicationEntity;
 using AutoMapper;
 
 namespace aduaba.api.Mapping

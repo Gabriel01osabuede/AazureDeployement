@@ -3,17 +3,15 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using aduaba.data.AppDbContext;
+using aduaba.api.AppDbContext;
 
-namespace aduaba.data.Migrations
+namespace aduaba.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210703093445_init")]
-    partial class init
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,7 +19,7 @@ namespace aduaba.data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("ProductVersion", "5.0.0");
 
-            modelBuilder.Entity("aduaba.data.Entities.ApplicationEntity.Category", b =>
+            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Category", b =>
                 {
                     b.Property<string>("CategoryId")
                         .HasColumnType("nvarchar(450)");
@@ -37,7 +35,7 @@ namespace aduaba.data.Migrations
                     b.ToTable("Categories");
                 });
 
-            modelBuilder.Entity("aduaba.data.Entities.ApplicationEntity.Product", b =>
+            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Product", b =>
                 {
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
@@ -70,16 +68,16 @@ namespace aduaba.data.Migrations
                     b.ToTable("Products");
                 });
 
-            modelBuilder.Entity("aduaba.data.Entities.ApplicationEntity.Product", b =>
+            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Product", b =>
                 {
-                    b.HasOne("aduaba.data.Entities.ApplicationEntity.Category", "Category")
+                    b.HasOne("aduaba.api.Entities.ApplicationEntity.Category", "Category")
                         .WithMany("Products")
                         .HasForeignKey("CategoryId");
 
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("aduaba.data.Entities.ApplicationEntity.Category", b =>
+            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Category", b =>
                 {
                     b.Navigation("Products");
                 });

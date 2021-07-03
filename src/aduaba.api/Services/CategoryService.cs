@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using aduaba.api.Interface;
 using aduaba.api.Models.Communication;
-using aduaba.data.AppDbContext;
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.AppDbContext;
+using aduaba.api.Entities.ApplicationEntity;
 using Microsoft.EntityFrameworkCore;
 
 namespace aduaba.api.Services

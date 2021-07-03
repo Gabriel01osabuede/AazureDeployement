@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace aduaba.data.Entities.ApplicationEntity
+namespace aduaba.api.Entities.ApplicationEntity
 {
     public class Category
     {

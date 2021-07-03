@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
 
-namespace aduaba.data.Migrations
+namespace aduaba.api.Migrations
 {
     public partial class init : Migration
     {

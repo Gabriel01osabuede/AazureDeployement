@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace aduaba.data.Entities.ApplicationEntity
+namespace aduaba.api.Entities.ApplicationEntity
 {
     public class Address
     {

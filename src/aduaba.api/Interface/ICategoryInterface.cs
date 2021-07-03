@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aduaba.api.Models.Communication;
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.Entities.ApplicationEntity;
 
 namespace aduaba.api.Interface
 {

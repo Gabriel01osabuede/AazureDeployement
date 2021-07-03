@@ -4,7 +4,7 @@ using aduaba.api.Extensions;
 using aduaba.api.Interface;
 using aduaba.api.Resource;
 using aduaba.api.Services;
-using aduaba.data.Entities.ApplicationEntity;
+using aduaba.api.Entities.ApplicationEntity;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 
