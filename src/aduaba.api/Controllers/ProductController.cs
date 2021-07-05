@@ -28,8 +28,6 @@ namespace aduaba.api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var imageUpload = new ImageUpload();
-
             string imagePath = addProduct.productImageFilePath;
             Product product = new Product()
             {
@@ -37,7 +35,7 @@ namespace aduaba.api.Controllers
                 productName = addProduct.productName,
                 productAmount = addProduct.productAmount,
                 productDescription = addProduct.productDescription,
-                productImageUrlPath = imageUpload.ImageUploads(imagePath),
+                productImageUrlPath = ImageUpload.ImageUploads(imagePath),
                 categoryId = addProduct.categoryId
             };
 
@@ -67,8 +65,7 @@ namespace aduaba.api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var imageUpload = new ImageUpload();
-
+                
             Product product = new Product()
             {
 
@@ -80,7 +77,7 @@ namespace aduaba.api.Controllers
             };
             if (!(string.IsNullOrEmpty(responseBody.productImageFilePath)))
             {
-                product.productImageUrlPath = imageUpload.ImageUploads(responseBody.productImageFilePath);
+                product.productImageUrlPath = ImageUpload.ImageUploads(responseBody.productImageFilePath);
             };
             var result = await _productService.UpdateAsync(Id, product);
 
