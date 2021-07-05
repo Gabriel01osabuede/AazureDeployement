@@ -29,18 +29,18 @@ namespace aduaba.api.Controllers
                 return BadRequest(ModelState.GetErrorMessages());
 
             string imagePath = addProduct.ProductImageFilePath;
-            Product product = new Product()
-            {
+            // Product product = new Product()
+            // {
 
-                ProductName = addProduct.ProductName,
-                ProductAmount = addProduct.ProductAmount,
-                ProductDescription = addProduct.ProductDescription,
-                ProductImageUrlPath = ImageUpload.ImageUploads(imagePath),
-                CategoryId = addProduct.CategoryId
-            };
-
+            //     ProductName = addProduct.ProductName,
+            //     ProductAmount = addProduct.ProductAmount,
+            //     ProductDescription = addProduct.ProductDescription,
+            //     ProductImageUrlPath = ImageUpload.ImageUploads(imagePath),
+            //     CategoryId = addProduct.CategoryId
+            // };
+            addProduct.ProductImageFilePath = ImageUpload.ImageUploads(imagePath);
             var products = _mapper.Map<AddProductResource, Product>(addProduct);
-            var result = await _productService.SaveAsync(product);
+            var result = await _productService.SaveAsync(products);
             
 
             if (!result.Success)
@@ -93,7 +93,7 @@ namespace aduaba.api.Controllers
 
         [HttpDelete]
         [Route("/api/[controller]/RemoveProduct")]
-        public async Task<IActionResult> RemoveProduct([FromQuery]string Id)
+        public async Task<IActionResult> RemoveProduct([FromQuery] string Id)
         {
             var deleteResult = await _productService.DeleteAsync(Id);
 
