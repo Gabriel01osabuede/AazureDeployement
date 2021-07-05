@@ -39,13 +39,13 @@ namespace aduaba.api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            // var Category = new Category() {
+            var category = new Category() {
 
-            //     CategoryName = addresource.CategoryName,
-            //     CategoryImage = ImageUpload.ImageUploads(addresource.CategoryImageFilePath)
-            // };
-            addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
-            var category = _mapper.Map<AddCategoryResource, Category>(addresource);
+                categoryName = addresource.categoryName,
+                categoryImage = ImageUpload.ImageUploads(addresource.categoryImageFilePath)
+            };
+            // addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
+            // var category = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(category);
 
             if (!result.success)

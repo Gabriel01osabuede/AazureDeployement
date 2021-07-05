@@ -13,7 +13,7 @@ namespace aduaba.api.Services
             var uploadParams = new ImageUploadParams()
             {
 
-                File = new FileDescription(imagePath)
+                File = new FileDescription(@imagePath)
             };
             var uploadResult = _cloudinary.Upload(uploadParams);
 
