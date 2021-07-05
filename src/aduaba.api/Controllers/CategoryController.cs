@@ -44,7 +44,7 @@ namespace aduaba.api.Controllers
             //     CategoryName = addresource.CategoryName,
             //     CategoryImage = ImageUpload.ImageUploads(addresource.CategoryImageFilePath)
             // };
-            // addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
+            addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
             var category = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(category);
 
