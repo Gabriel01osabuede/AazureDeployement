@@ -26,14 +26,14 @@ namespace aduaba.api.Services
 
         public async Task<CategoryResponse> DeleteAsync(string Id)
         {
-            var existingCategory = await _context.Categories.FindAsync(Id);
+            var existingCategory = await _context.Category.FindAsync(Id);
 
             if (existingCategory == null)
                 return new CategoryResponse("Category Not Found");
 
             try
             {
-                _context.Categories.Remove(existingCategory);
+                _context.Category.Remove(existingCategory);
                 await CompleteAsync();
 
                 return new CategoryResponse(existingCategory);
@@ -46,14 +46,14 @@ namespace aduaba.api.Services
 
         public async Task<IEnumerable<Category>> ListAsync()
         {
-            return await _context.Categories.ToListAsync();
+            return await _context.Category.ToListAsync();
         }
 
         public async Task<CategoryResponse> SaveAsync(Category category)
         {
             try
             {
-                await _context.Categories.AddAsync(category);
+                await _context.Category.AddAsync(category);
                 await CompleteAsync();
 
                 return new CategoryResponse(category);
@@ -66,7 +66,7 @@ namespace aduaba.api.Services
 
         public async Task<CategoryResponse> UpdateAsync(string Id, Category category)
         {
-            var existingCategory = await _context.Categories.FindAsync(Id);
+            var existingCategory = await _context.Category.FindAsync(Id);
             if (existingCategory == null)
                 return new CategoryResponse("Category Not Found");
             if(!(string.IsNullOrEmpty(category.categoryName)))
@@ -81,7 +81,7 @@ namespace aduaba.api.Services
 
             try
             {
-                _context.Categories.Update(existingCategory);
+                _context.Category.Update(existingCategory);
                 await CompleteAsync();
 
                 return new CategoryResponse(existingCategory);

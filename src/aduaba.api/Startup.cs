@@ -15,6 +15,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using aduaba.api.Entities.ApplicationEntity.ApplicationUserModels;
+using Microsoft.AspNetCore.Identity;
+using aduaba.api.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace aduaba.api
 {
@@ -41,11 +47,42 @@ namespace aduaba.api
                 Configuration.GetConnectionString("MyAduabaWebDb")
             ));
 
+
             //Registering AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            services.AddScoped<IUserInterface, UserService>();
             services.AddScoped<IProductInterface, ProductService>();
             services.AddScoped<ICategoryInterface, CategoryService>();
+
+            //Configuration from AppSettings
+            services.Configure<JWT>(Configuration.GetSection("JWT"));
+            //User Manager Service
+            services.AddIdentity<ApplicationUser, IdentityRole>().AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddScoped<IUserInterface, UserService>();
+            //Adding Athentication - JWT
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+                .AddJwtBearer(o =>
+                {
+                    o.RequireHttpsMetadata = false;
+                    o.SaveToken = false;
+                    o.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ClockSkew = TimeSpan.Zero,
+                        ValidIssuer = Configuration["JWT:Issuer"],
+                        ValidAudience = Configuration["JWT:Audience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
+                    };
+                });
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -65,6 +102,7 @@ namespace aduaba.api
 
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -73,12 +111,50 @@ namespace aduaba.api
             });
 
             MigrateDatabaseContext(svp);
+            CreateDefaultRoleAndUserAsync(svp).GetAwaiter().GetResult();
         }
 
         public void MigrateDatabaseContext(IServiceProvider svp)
         {
             var applicationDbContext = svp.GetRequiredService<ApplicationDbContext>();
             applicationDbContext.Database.Migrate();
+        }
+
+        public async Task CreateDefaultRoleAndUserAsync(IServiceProvider svp)
+        {
+            string[] roles = new string[] {
+                "Administrator","Moderator","User"
+            };
+            var userEmail = "gabriel@gmail.com";
+            var userPassword = "Osabu100.";
+
+            var roleManager = svp.GetRequiredService<RoleManager<IdentityRole>>();
+            foreach (var role in roles)
+            {
+                var roleExists = await roleManager.RoleExistsAsync(role);
+                if (!roleExists)
+                {
+                    await roleManager.CreateAsync(new IdentityRole { Name = role });
+                }
+            }
+
+            var userManager = svp.GetRequiredService<UserManager<ApplicationUser>>();
+            var user = await userManager.FindByEmailAsync(userEmail);
+            if (user is null)
+            {
+                user = new ApplicationUser
+                {
+                    Email = userEmail,
+                    UserName = userEmail,
+                    EmailConfirmed = true,
+                    PhoneNumber = "+2349087675632",
+                    PhoneNumberConfirmed = true
+                };
+
+                await userManager.CreateAsync(user, userPassword);
+                await userManager.AddToRolesAsync(user, roles);
+
+            }
         }
     }
 }

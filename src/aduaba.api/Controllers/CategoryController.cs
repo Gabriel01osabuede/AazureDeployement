@@ -7,9 +7,12 @@ using aduaba.api.Services;
 using aduaba.api.Entities.ApplicationEntity;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aduaba.api.Controllers
 {
+    [Authorize]
+    [ApiController]
     public class CategoryController : Controller
     {
         private readonly ICategoryInterface _categoryService;
@@ -23,6 +26,7 @@ namespace aduaba.api.Controllers
 
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/[controller]/GetCategories")]
         public async Task<IEnumerable<CategoryResource>> GetAllAsync()
         {
@@ -33,13 +37,15 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/PostCategory")]
         public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
-            
-            var category = new Category() {
+
+            var category = new Category()
+            {
 
                 categoryName = addresource.categoryName,
                 categoryImage = ImageUpload.ImageUploads(addresource.categoryImageFilePath)
@@ -57,8 +63,9 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/UpdateCategory")]
-        public async Task<IActionResult> PutAsync([FromQuery] string Id,[FromBody] AddCategoryResource putResource)
+        public async Task<IActionResult> PutAsync([FromQuery] string Id, [FromBody] AddCategoryResource putResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
@@ -78,6 +85,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/RemoveCategory")]
         public async Task<IActionResult> DeleteAsync([FromQuery] string Id)
         {

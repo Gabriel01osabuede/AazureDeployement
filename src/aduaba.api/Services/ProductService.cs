@@ -26,19 +26,19 @@ namespace aduaba.api.Services
 
         public async Task<ProductResponse> DeleteAsync(string Id)
         {
-            var existingProduct = await _context.Products.FindAsync(Id);
+            var existingProduct = await _context.Product.FindAsync(Id);
 
             if (existingProduct == null)
                 return new ProductResponse("Product Not Found");
 
             try
             {
-                _context.Products.Remove(existingProduct);
+                _context.Product.Remove(existingProduct);
                 await CompleteAsync();
 
                 return new ProductResponse(existingProduct);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ProductResponse(ex.Message);
             }
@@ -46,19 +46,19 @@ namespace aduaba.api.Services
 
         public async Task<IEnumerable<Product>> ListAysnc()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Product.ToListAsync();
         }
 
         public async Task<ProductResponse> SaveAsync(Product product)
         {
             try
             {
-                await _context.Products.AddAsync(product);
+                await _context.Product.AddAsync(product);
                 await CompleteAsync();
 
                 return new ProductResponse(product);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ProductResponse($"An error occurred while saving the products : {ex.Message}");
             }
@@ -66,7 +66,7 @@ namespace aduaba.api.Services
 
         public async Task<ProductResponse> UpdateAsync(string Id, Product product)
         {
-            var existingProduct = await _context.Products.FindAsync(Id);
+            var existingProduct = await _context.Product.FindAsync(Id);
             if (existingProduct == null)
                 return new ProductResponse("Product Not Found");
 
@@ -74,7 +74,7 @@ namespace aduaba.api.Services
             {
                 existingProduct.productImageUrlPath = product.productImageUrlPath;
             }
-            if(!(string.IsNullOrEmpty(product.productName)))
+            if (!(string.IsNullOrEmpty(product.productName)))
             {
                 existingProduct.productName = product.productName;
             }
@@ -82,7 +82,7 @@ namespace aduaba.api.Services
             {
                 existingProduct.productAmount = product.productAmount;
             }
-            if(!(string.IsNullOrEmpty(product.productDescription)))
+            if (!(string.IsNullOrEmpty(product.productDescription)))
             {
                 existingProduct.productDescription = product.productDescription;
             }
@@ -91,12 +91,12 @@ namespace aduaba.api.Services
 
             try
             {
-                _context.Products.Update(product);
+                _context.Product.Update(product);
                 await CompleteAsync();
 
                 return new ProductResponse(existingProduct);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return new ProductResponse($"An error occurred when Updating the product : {ex.Message}");
             }

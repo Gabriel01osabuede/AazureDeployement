@@ -7,9 +7,12 @@ using aduaba.api.Services;
 using aduaba.api.Entities.ApplicationEntity;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 namespace aduaba.api.Controllers
 {
+    [Authorize]
+    [ApiController]
     public class ProductController : Controller
     {
         private readonly IProductInterface _productService;
@@ -22,6 +25,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/AddProduct")]
         public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
@@ -49,6 +53,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpGet]
+        [AllowAnonymous]
         [Route("/api/[controller]/GetProduct")]
         public async Task<IEnumerable<ProductResource>> GetAllProductAsync()
         {
@@ -59,13 +64,14 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/UpdateProduct")]
-        public async Task<IActionResult> UpdateProductById([FromQuery] string Id,[FromBody] UpdateProductResource responseBody)
+        public async Task<IActionResult> UpdateProductById([FromQuery] string Id, [FromBody] UpdateProductResource responseBody)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-                
+
             Product product = new Product()
             {
 
@@ -90,8 +96,9 @@ namespace aduaba.api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/RemoveProduct")]
-        public async Task<IActionResult> RemoveProduct([FromQuery]string Id)
+        public async Task<IActionResult> RemoveProduct([FromQuery] string Id)
         {
             var deleteResult = await _productService.DeleteAsync(Id);
 
