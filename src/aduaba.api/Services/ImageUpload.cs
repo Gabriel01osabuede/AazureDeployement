@@ -9,7 +9,7 @@ namespace aduaba.api.Services
         {
             var myAccount = new Account { ApiKey = "394658146624914", ApiSecret = "XhY1ShBFcosd5syu14ZWmTNF4YY", Cloud = "osabuedegabriel" };
             Cloudinary _cloudinary = new Cloudinary(myAccount);
-
+            _cloudinary.Api.Secure = true;
             var uploadParams = new ImageUploadParams()
             {
 
