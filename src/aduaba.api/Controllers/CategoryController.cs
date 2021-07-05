@@ -48,8 +48,8 @@ namespace aduaba.api.Controllers
             //var categories = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(Category);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            // if (!result.Success)
+            //     return BadRequest(result.Message);
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
             return Ok(categoryResource);

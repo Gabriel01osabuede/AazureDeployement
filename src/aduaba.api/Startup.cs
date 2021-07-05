@@ -38,7 +38,7 @@ namespace aduaba.api
             });
 
             services.AddDbContextPool<ApplicationDbContext>(options => options.UseSqlServer(
-                Configuration.GetConnectionString("MyAduabaDb")
+                Configuration.GetConnectionString("MyAduabaWebDb")
             ));
 
             //Registering AutoMapper
