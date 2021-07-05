@@ -23,7 +23,7 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/AddProduct")]
-        public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
+        public async Task<IActionResult> PostProductAsync(AddProductResource addProduct)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
@@ -62,7 +62,7 @@ namespace aduaba.api.Controllers
 
         [HttpPut]
         [Route("/api/[controller]/UpdateProduct")]
-        public async Task<IActionResult> UpdateProductById([FromQuery] string Id,[FromBody] UpdateProductResource responseBody)
+        public async Task<IActionResult> UpdateProductById([FromQuery] string Id,UpdateProductResource responseBody)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());

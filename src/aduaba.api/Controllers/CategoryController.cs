@@ -34,7 +34,7 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/PostCategory")]
-        public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
+        public async Task<IActionResult> PostAsync(AddCategoryResource addresource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
@@ -59,7 +59,7 @@ namespace aduaba.api.Controllers
 
         [HttpPut]
         [Route("/api/[controller]/UpdateCategory")]
-        public async Task<IActionResult> PutAsync([FromQuery] string Id, [FromBody] AddCategoryResource putResource)
+        public async Task<IActionResult> PutAsync([FromQuery] string Id, AddCategoryResource putResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
