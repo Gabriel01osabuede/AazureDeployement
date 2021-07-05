@@ -34,14 +34,12 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/PostCategory")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> PostAsync(AddCategoryResource addresource)
+        public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            // var Category = new Category()
-            // {
+            // var Category = new Category() {
 
             //     CategoryName = addresource.CategoryName,
             //     CategoryImage = ImageUpload.ImageUploads(addresource.CategoryImageFilePath)
@@ -60,7 +58,7 @@ namespace aduaba.api.Controllers
 
         [HttpPut]
         [Route("/api/[controller]/UpdateCategory")]
-        public async Task<IActionResult> PutAsync([FromQuery] string Id, AddCategoryResource putResource)
+        public async Task<IActionResult> PutAsync([FromQuery] string Id,[FromBody] AddCategoryResource putResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());

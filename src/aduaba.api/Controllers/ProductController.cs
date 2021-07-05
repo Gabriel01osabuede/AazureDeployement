@@ -23,25 +23,23 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/AddProduct")]
-        public async Task<IActionResult> PostProductAsync(AddProductResource addProduct)
+        public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
             string imagePath = addProduct.ProductImageFilePath;
-            // Product product = new Product()
-            // {
+            Product product = new Product()
+            {
 
-            //     ProductName = addProduct.ProductName,
-            //     ProductAmount = addProduct.ProductAmount,
-            //     ProductDescription = addProduct.ProductDescription,
-            //     ProductImageUrlPath = ImageUpload.ImageUploads(imagePath),
-            //     CategoryId = addProduct.CategoryId
-            // };
-            addProduct.ProductImageFilePath = ImageUpload.ImageUploads(imagePath);
-            var products = _mapper.Map<AddProductResource, Product>(addProduct);
-            var result = await _productService.SaveAsync(products);
-            
+                ProductName = addProduct.ProductName,
+                ProductAmount = addProduct.ProductAmount,
+                ProductDescription = addProduct.ProductDescription,
+                ProductImageUrlPath = ImageUpload.ImageUploads(imagePath),
+                CategoryId = addProduct.CategoryId
+            };
+
+            var result = await _productService.SaveAsync(product);
 
             if (!result.Success)
                 return BadRequest(result.Message);
@@ -62,7 +60,7 @@ namespace aduaba.api.Controllers
 
         [HttpPut]
         [Route("/api/[controller]/UpdateProduct")]
-        public async Task<IActionResult> UpdateProductById([FromQuery] string Id,UpdateProductResource responseBody)
+        public async Task<IActionResult> UpdateProductById([FromQuery] string Id,[FromBody] UpdateProductResource responseBody)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
@@ -93,7 +91,7 @@ namespace aduaba.api.Controllers
 
         [HttpDelete]
         [Route("/api/[controller]/RemoveProduct")]
-        public async Task<IActionResult> RemoveProduct([FromQuery] string Id)
+        public async Task<IActionResult> RemoveProduct([FromQuery]string Id)
         {
             var deleteResult = await _productService.DeleteAsync(Id);
 
