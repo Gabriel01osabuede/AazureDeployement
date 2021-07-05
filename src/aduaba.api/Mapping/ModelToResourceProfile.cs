@@ -8,8 +8,8 @@ namespace aduaba.api.Mapping
     {
         public ModelToResourceProfile()
         {
-            CreateMap<Category, CategoryResource>();
-            CreateMap<Product, ProductResource>();
+            CreateMap<Category, CategoryResource>().ReverseMap();
+            CreateMap<Product, ProductResource>().ReverseMap();
             // CreateMap<Cart, CartResource>();
         }
     }
