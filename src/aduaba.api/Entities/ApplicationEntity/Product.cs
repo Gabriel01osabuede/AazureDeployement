@@ -5,16 +5,16 @@ namespace aduaba.api.Entities.ApplicationEntity
 {
     public class Product
     {
-        public string ProductId { get; set; } = Guid.NewGuid().ToString();
-        public string ProductImageUrlPath { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
+        public string productId { get; set; } = Guid.NewGuid().ToString();
+        public string productImageUrlPath { get; set; }
+        public string productName { get; set; }
+        public string productDescription { get; set; }
         [Column(TypeName = "decimal(18, 2)")]
-        public decimal ProductAmount { get; set; }
-        public bool ProductAvailabilty { get; set; } = true;
-        public DateTime CreatedDate { get; set; } = DateTime.Now;
+        public decimal productAmount { get; set; }
+        public bool productAvailabilty { get; set; } = true;
+        public DateTime createdDate { get; set; } = DateTime.Now;
 
-        public string CategoryId { get; set; }
-        public Category Category { get; set; }
+        public string categoryId { get; set; }
+        public Category category { get; set; }
     }
 }

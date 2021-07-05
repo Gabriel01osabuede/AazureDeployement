@@ -6,7 +6,7 @@ namespace aduaba.api.Resource
     {
         [Required]
         [MaxLength(30)]
-        public string CategoryName { get; set; }
-        public string CategoryImageFilePath { get; set; }
+        public string categoryName { get; set; }
+        public string categoryImageFilePath { get; set; }
     }
 }

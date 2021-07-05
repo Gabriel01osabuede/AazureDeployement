@@ -44,14 +44,14 @@ namespace aduaba.api.Controllers
             //     CategoryName = addresource.CategoryName,
             //     CategoryImage = ImageUpload.ImageUploads(addresource.CategoryImageFilePath)
             // };
-            addresource.CategoryImageFilePath = ImageUpload.ImageUploads(addresource.CategoryImageFilePath);
+            addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
             var category = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(category);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            if (!result.success)
+                return BadRequest(result.message);
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
+            var categoryResource = _mapper.Map<Category, CategoryResource>(result.category);
             return Ok(categoryResource);
 
         }
@@ -65,15 +65,15 @@ namespace aduaba.api.Controllers
 
             var Category = new Category()
             {
-                CategoryName = putResource.CategoryName,
-                CategoryImage = ImageUpload.ImageUploads(putResource.CategoryImageFilePath)
+                categoryName = putResource.categoryName,
+                categoryImage = ImageUpload.ImageUploads(putResource.categoryImageFilePath)
             };
             var result = await _categoryService.UpdateAsync(Id, Category);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            if (!result.success)
+                return BadRequest(result.message);
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
+            var categoryResource = _mapper.Map<Category, CategoryResource>(result.category);
             return Ok(categoryResource);
         }
 
@@ -83,10 +83,10 @@ namespace aduaba.api.Controllers
         {
             var deleteResult = await _categoryService.DeleteAsync(Id);
 
-            if (!deleteResult.Success)
-                return BadRequest(deleteResult.Message);
+            if (!deleteResult.success)
+                return BadRequest(deleteResult.message);
 
-            var categoryResource = _mapper.Map<Category, CategoryResource>(deleteResult.Category);
+            var categoryResource = _mapper.Map<Category, CategoryResource>(deleteResult.category);
             return Ok(categoryResource);
         }
     }

@@ -5,20 +5,20 @@ namespace aduaba.api.Entities.ApplicationEntity
     public class Address
     {
         [Key]
-        public string AddressId { get; set; }
+        public string addressId { get; set; }
         [Required]
-        public string Country { get; set; }
+        public string country { get; set; }
 
          [Required]
-        public string State { get; set; }
+        public string state { get; set; }
         
          [Required]
-        public string AddressNo { get; set; }
+        public string addressNo { get; set; }
 
-        public string UserId { get; set; }
+        public string userId { get; set; }
 
         // public ApplicationUser UserName { get; set; }
 
-        public string Id { get; set; }
+        public string id { get; set; }
     }
 }

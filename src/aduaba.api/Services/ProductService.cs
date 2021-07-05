@@ -70,24 +70,24 @@ namespace aduaba.api.Services
             if (existingProduct == null)
                 return new ProductResponse("Product Not Found");
 
-            if (!(string.IsNullOrEmpty(product.ProductImageUrlPath)))
+            if (!(string.IsNullOrEmpty(product.productImageUrlPath)))
             {
-                existingProduct.ProductImageUrlPath = product.ProductImageUrlPath;
+                existingProduct.productImageUrlPath = product.productImageUrlPath;
             }
-            if(!(string.IsNullOrEmpty(product.ProductName)))
+            if(!(string.IsNullOrEmpty(product.productName)))
             {
-                existingProduct.ProductName = product.ProductName;
+                existingProduct.productName = product.productName;
             }
-            if (!product.ProductAmount.Equals(null))
+            if (!product.productAmount.Equals(null))
             {
-                existingProduct.ProductAmount = product.ProductAmount;
+                existingProduct.productAmount = product.productAmount;
             }
-            if(!(string.IsNullOrEmpty(product.ProductDescription)))
+            if(!(string.IsNullOrEmpty(product.productDescription)))
             {
-                existingProduct.ProductDescription = product.ProductDescription;
+                existingProduct.productDescription = product.productDescription;
             }
 
-            existingProduct.ProductAvailabilty = product.ProductAvailabilty;
+            existingProduct.productAvailabilty = product.productAvailabilty;
 
             try
             {

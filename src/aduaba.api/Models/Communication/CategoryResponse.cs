@@ -4,11 +4,11 @@ namespace aduaba.api.Models.Communication
 {
     public class CategoryResponse : BaseResponse
     {
-        public Category Category { get; private set; }
+        public Category category { get; private set; }
 
         private CategoryResponse(bool success, string message, Category category) : base(success, message)
         {
-            Category = category;
+            this.category = category;
         }
 
         public CategoryResponse(Category category) : this(true, string.Empty, category) { }

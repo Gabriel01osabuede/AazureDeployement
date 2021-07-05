@@ -28,23 +28,23 @@ namespace aduaba.api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            string imagePath = addProduct.ProductImageFilePath;
+            string imagePath = addProduct.productImageFilePath;
             Product product = new Product()
             {
 
-                ProductName = addProduct.ProductName,
-                ProductAmount = addProduct.ProductAmount,
-                ProductDescription = addProduct.ProductDescription,
-                ProductImageUrlPath = ImageUpload.ImageUploads(imagePath),
-                CategoryId = addProduct.CategoryId
+                productName = addProduct.productName,
+                productAmount = addProduct.productAmount,
+                productDescription = addProduct.productDescription,
+                productImageUrlPath = ImageUpload.ImageUploads(imagePath),
+                categoryId = addProduct.categoryId
             };
 
             var result = await _productService.SaveAsync(product);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            if (!result.success)
+                return BadRequest(result.message);
 
-            var productResource = _mapper.Map<Product, ProductResource>(result.Product);
+            var productResource = _mapper.Map<Product, ProductResource>(result.product);
             return Ok(productResource);
         }
 
@@ -69,22 +69,22 @@ namespace aduaba.api.Controllers
             Product product = new Product()
             {
 
-                ProductName = responseBody.ProductName,
-                ProductAmount = responseBody.ProductAmount,
-                ProductDescription = responseBody.ProductDescription,
-                CategoryId = responseBody.CategoryId,
-                ProductAvailabilty = responseBody.ProductAvailabilty
+                productName = responseBody.productName,
+                productAmount = responseBody.productAmount,
+                productDescription = responseBody.productDescription,
+                categoryId = responseBody.categoryId,
+                productAvailabilty = responseBody.productAvailabilty
             };
-            if (!(string.IsNullOrEmpty(responseBody.ProductImageFilePath)))
+            if (!(string.IsNullOrEmpty(responseBody.productImageFilePath)))
             {
-                product.ProductImageUrlPath = ImageUpload.ImageUploads(responseBody.ProductImageFilePath);
+                product.productImageUrlPath = ImageUpload.ImageUploads(responseBody.productImageFilePath);
             };
             var result = await _productService.UpdateAsync(Id, product);
 
-            if (!result.Success)
-                return BadRequest(result.Message);
+            if (!result.success)
+                return BadRequest(result.message);
 
-            var productResource = _mapper.Map<Product, UpdateProductResource>(result.Product);
+            var productResource = _mapper.Map<Product, UpdateProductResource>(result.product);
 
             return Ok(productResource);
         }
@@ -95,10 +95,10 @@ namespace aduaba.api.Controllers
         {
             var deleteResult = await _productService.DeleteAsync(Id);
 
-            if (!deleteResult.Success)
-                return BadRequest(deleteResult.Message);
+            if (!deleteResult.success)
+                return BadRequest(deleteResult.message);
 
-            var productResource = _mapper.Map<Product, ProductService>(deleteResult.Product);
+            var productResource = _mapper.Map<Product, ProductService>(deleteResult.product);
             return Ok(productResource);
 
         }

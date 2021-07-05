@@ -2,13 +2,13 @@ namespace aduaba.api.Models.Communication
 {
     public abstract class BaseResponse
     {
-        public bool Success { get; set; }
-        public string Message { get; set; }
+        public bool success { get; set; }
+        public string message { get; set; }
 
         public BaseResponse(bool success, string message)
         {
-            Success = success;
-            Message = message;
+            this.success = success;
+            this.message = message;
         }
     }
 }

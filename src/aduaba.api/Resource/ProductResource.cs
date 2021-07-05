@@ -2,12 +2,12 @@ namespace aduaba.api.Resource
 {
     public class ProductResource
     {
-        public string ProductId { get; set; }
-        public string ProductImageUrlPath { get; set; }
-        public string ProductName { get; set; }
-        public string ProductDescription { get; set; }
-        public decimal ProductAmount { get; set; }
-        public string CategoryId { get; set; }
-        public bool ProductAvailabilty { get; set; }
+        public string productId { get; set; }
+        public string productImageUrlPath { get; set; }
+        public string productName { get; set; }
+        public string productDescription { get; set; }
+        public decimal productAmount { get; set; }
+        public string categoryId { get; set; }
+        public bool productAvailabilty { get; set; }
     }
 }

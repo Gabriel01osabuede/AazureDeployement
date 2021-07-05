@@ -69,13 +69,13 @@ namespace aduaba.api.Services
             var existingCategory = await _context.Categories.FindAsync(Id);
             if (existingCategory == null)
                 return new CategoryResponse("Category Not Found");
-            if(!(string.IsNullOrEmpty(category.CategoryName)))
+            if(!(string.IsNullOrEmpty(category.categoryName)))
             {
-                existingCategory.CategoryName = category.CategoryName;
+                existingCategory.categoryName = category.categoryName;
             }
-            if(!(string.IsNullOrEmpty(category.CategoryImage)))
+            if(!(string.IsNullOrEmpty(category.categoryImage)))
             {
-                existingCategory.CategoryImage = category.CategoryImage;
+                existingCategory.categoryImage = category.categoryImage;
             }
             
 

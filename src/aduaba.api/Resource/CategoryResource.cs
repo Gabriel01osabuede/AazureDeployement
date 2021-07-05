@@ -2,8 +2,8 @@ namespace aduaba.api.Resource
 {
     public class CategoryResource
     {
-        public string CategoryId { get; set; }
-        public string CategoryName { get; set; }
-        public string CategoryImage { get; set; }
+        public string categoryId { get; set; }
+        public string categoryName { get; set; }
+        public string categoryImage { get; set; }
     }
 }
