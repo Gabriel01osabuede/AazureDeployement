@@ -34,7 +34,7 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/PostCategory")]
-        public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
+        public async Task<IActionResult> PostAsync(AddCategoryResource addresource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
