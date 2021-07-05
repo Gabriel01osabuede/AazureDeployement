@@ -39,17 +39,18 @@ namespace aduaba.api.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var Category = new Category() {
+            var Category = new Category()
+            {
 
                 CategoryName = addresource.CategoryName,
                 CategoryImage = ImageUpload.ImageUploads(addresource.CategoryImageFilePath)
             };
 
-            //var categories = _mapper.Map<AddCategoryResource, Category>(addresource);
+            var categories = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(Category);
 
-            // if (!result.Success)
-            //     return BadRequest(result.Message);
+            if (!result.Success)
+                return BadRequest(result.Message);
 
             var categoryResource = _mapper.Map<Category, CategoryResource>(result.Category);
             return Ok(categoryResource);
@@ -58,7 +59,7 @@ namespace aduaba.api.Controllers
 
         [HttpPut]
         [Route("/api/[controller]/UpdateCategory")]
-        public async Task<IActionResult> PutAsync([FromQuery] string Id,[FromBody] AddCategoryResource putResource)
+        public async Task<IActionResult> PutAsync([FromQuery] string Id, [FromBody] AddCategoryResource putResource)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());

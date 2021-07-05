@@ -39,7 +39,9 @@ namespace aduaba.api.Controllers
                 CategoryId = addProduct.CategoryId
             };
 
+            var products = _mapper.Map<AddProductResource, Product>(addProduct);
             var result = await _productService.SaveAsync(product);
+            
 
             if (!result.Success)
                 return BadRequest(result.Message);
