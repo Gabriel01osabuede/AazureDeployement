@@ -8,6 +8,7 @@ using aduaba.api.Entities.ApplicationEntity;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
+using aduaba.api.AppDbContext;
 
 namespace aduaba.api.Controllers
 {
@@ -17,11 +18,13 @@ namespace aduaba.api.Controllers
     {
         private readonly IProductInterface _productService;
         private readonly IMapper _mapper;
+        private readonly ApplicationDbContext _context;
 
-        public ProductController(IProductInterface productService, IMapper mapper)
+        public ProductController(ApplicationDbContext context,IProductInterface productService, IMapper mapper)
         {
             _productService = productService;
             _mapper = mapper;
+            _context = context;
         }
 
         [HttpPost]
@@ -52,6 +55,17 @@ namespace aduaba.api.Controllers
             return Ok(productResource);
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/[controller]/GetAllProductsByCategory")]
+        public async Task<IEnumerable<ProductResource>> GetProductsBYCategoryId([FromQuery] string CategoryId)
+        {
+            var allProduct = await _productService.ListProductByCategoryIdAsync(CategoryId); 
+            var resources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(allProduct);
+
+            return resources;
+        }
+        
         [HttpGet]
         [AllowAnonymous]
         [Route("/api/[controller]/GetProduct")]

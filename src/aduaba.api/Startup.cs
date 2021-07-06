@@ -51,6 +51,8 @@ namespace aduaba.api
             //Registering AutoMapper
             services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             services.AddScoped<IUserInterface, UserService>();
+            services.AddScoped<ICartService, CartService>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductInterface, ProductService>();
             services.AddScoped<ICategoryInterface, CategoryService>();
 

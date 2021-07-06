@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using aduaba.api.Entities.ApplicationEntity.ApplicationUserModels;
 using aduaba.api.Extensions;
@@ -6,6 +7,7 @@ using aduaba.api.Interface;
 using aduaba.api.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aduaba.api.Controllers
@@ -15,9 +17,11 @@ namespace aduaba.api.Controllers
     public class UserController : Controller
     {
         private readonly IUserInterface _userService;
-        public UserController(IUserInterface userService)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public UserController(IUserInterface userService, UserManager<ApplicationUser> userManager)
         {
             _userService = userService;
+            _userManager = userManager;
         }
 
         [HttpPost]
@@ -125,6 +129,26 @@ namespace aduaba.api.Controllers
 
             return Ok($"Your Details have been Updated Successfully : {model}");
 
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Administrator")]
+        [Route("api/[controller]/GetAllUsers")]
+        public async Task<IActionResult> GetAllRegisteredUsers()
+        {
+            var users = (await _userManager.GetUsersInRoleAsync("User")).ToArray();
+
+            return Ok(users);
+        }
+
+        [HttpGet]
+        [Authorize(Roles ="Administrator")]
+        [Route("api/[controller]/GetAllAdministrators")]
+        public async Task<IActionResult> GetAllRegisteredAdministrators()
+        {
+            var admins = (await _userManager.GetUsersInRoleAsync("Administrator")).ToArray();
+
+            return Ok(admins);
         }
     }
 }

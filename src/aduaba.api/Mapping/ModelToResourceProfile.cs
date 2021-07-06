@@ -10,6 +10,7 @@ namespace aduaba.api.Mapping
         {
             CreateMap<Category, CategoryResource>().ReverseMap();
             CreateMap<Product, ProductResource>().ReverseMap();
+            CreateMap<Cart, ShowCartResource>();
             // CreateMap<Cart, CartResource>();
         }
     }

@@ -36,6 +36,8 @@ namespace aduaba.api.Controllers
             return resources;
         }
 
+        
+
         [HttpPost]
         [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/PostCategory")]

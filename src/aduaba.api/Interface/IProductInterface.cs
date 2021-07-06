@@ -11,5 +11,6 @@ namespace aduaba.api.Interface
         Task<ProductResponse> SaveAsync(Product product);
         Task<ProductResponse> UpdateAsync(string Id, Product product);
         Task<ProductResponse> DeleteAsync(string Id);
+        public Task<IEnumerable<Product>> ListProductByCategoryIdAsync(string CategoryId);
     }
 }

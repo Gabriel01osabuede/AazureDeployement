@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using aduaba.api.Entities.ApplicationEntity.ApplicationUserModels;
 
 namespace aduaba.api.Entities.ApplicationEntity
 {
@@ -13,11 +14,11 @@ namespace aduaba.api.Entities.ApplicationEntity
         public string state { get; set; }
         
          [Required]
-        public string addressNo { get; set; }
+        public string addressNumber { get; set; }
 
         public string userId { get; set; }
 
-        // public ApplicationUser UserName { get; set; }
+        public ApplicationUser UserName { get; set; }
 
         public string id { get; set; }
     }

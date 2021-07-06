@@ -6,6 +6,7 @@ using aduaba.api.Models.Communication;
 using aduaba.api.AppDbContext;
 using aduaba.api.Entities.ApplicationEntity;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace aduaba.api.Services
 {
@@ -49,6 +50,15 @@ namespace aduaba.api.Services
             return await _context.Product.ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> ListProductByCategoryIdAsync(string CategoryId)
+        {
+            var products = await _context.Product
+                                .Where(s => s.categoryId == CategoryId)
+                                .ToListAsync();
+
+            return products;
+        }
+
         public async Task<ProductResponse> SaveAsync(Product product)
         {
             try
@@ -62,6 +72,13 @@ namespace aduaba.api.Services
             {
                 return new ProductResponse($"An error occurred while saving the products : {ex.Message}");
             }
+        }
+
+        public async Task<ProductResponse> GetProductById(string ProductId)
+        {
+            var product = await _context.Product.FindAsync(ProductId);
+
+            return new ProductResponse(product);
         }
 
         public async Task<ProductResponse> UpdateAsync(string Id, Product product)
