@@ -20,6 +20,5 @@ namespace aduaba.api.Entities.ApplicationEntity
 
         public ApplicationUser UserName { get; set; }
 
-        public string id { get; set; }
     }
 }
