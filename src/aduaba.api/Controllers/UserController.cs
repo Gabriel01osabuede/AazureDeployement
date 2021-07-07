@@ -42,8 +42,12 @@ namespace aduaba.api.Controllers
             if (result.IsAuthenticated == true)
             {
                 SetRefreshTokenInCookie(result.RefreshToken);
+                return Ok(result);
+
             }
-            return Ok(result);
+            return NoContent();
+
+
         }
 
         [HttpPost]
@@ -132,7 +136,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles = "Administrator")]
         [Route("api/[controller]/GetAllUsers")]
         public async Task<IActionResult> GetAllRegisteredUsers()
         {
@@ -142,7 +146,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles ="Administrator")]
+        [Authorize(Roles = "Administrator")]
         [Route("api/[controller]/GetAllAdministrators")]
         public async Task<IActionResult> GetAllRegisteredAdministrators()
         {
