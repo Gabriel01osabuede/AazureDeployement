@@ -20,7 +20,7 @@ namespace aduaba.api.Controllers
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
 
-        public ProductController(ApplicationDbContext context,IProductInterface productService, IMapper mapper)
+        public ProductController(ApplicationDbContext context, IProductInterface productService, IMapper mapper)
         {
             _productService = productService;
             _mapper = mapper;
@@ -28,7 +28,8 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
+        // [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/AddProduct")]
         public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
@@ -60,15 +61,40 @@ namespace aduaba.api.Controllers
         [Route("api/[controller]/GetAllProductsByCategory")]
         public async Task<IEnumerable<ProductResource>> GetProductsBYCategoryId([FromQuery] string CategoryId)
         {
-            var allProduct = await _productService.ListProductByCategoryIdAsync(CategoryId); 
+            var allProduct = await _productService.ListProductByCategoryIdAsync(CategoryId);
             var resources = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(allProduct);
 
             return resources;
         }
-        
+
         [HttpGet]
         [AllowAnonymous]
-        [Route("/api/[controller]/GetProduct")]
+        [Route("api/[controller]/GetPoductById")]
+        public async Task<ProductResource> GetProductById([FromQuery] string ProductId)
+        {
+            var product = await _productService.GetProductById(ProductId);
+            var resource = _mapper.Map<Product, ProductResource>(product);
+
+            return resource;
+
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("api/[controller]/GetPoductByName")]
+        public async Task<IEnumerable<ProductResource>> GetProductByName([FromBody] GetProductByName model)
+        {
+            var product = await _productService.GetListOfProductsByNameAsync(model.productName);
+            var resource = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductResource>>(product);
+
+            return resource;
+
+        }
+
+
+        [HttpGet]
+        [AllowAnonymous]
+        [Route("/api/[controller]/GetAllProducts")]
         public async Task<IEnumerable<ProductResource>> GetAllProductAsync()
         {
             var product = await _productService.ListAysnc();

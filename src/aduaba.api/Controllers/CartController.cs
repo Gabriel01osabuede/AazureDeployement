@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using aduaba.api.AppDbContext;
@@ -9,6 +10,7 @@ using aduaba.api.Resource;
 using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace aduaba.api.Controllers
 {
@@ -40,29 +42,29 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [Route("/api/[controller]/AddCartItem")]
-        public async Task<IActionResult> AddItemToCart([FromQuery] string UserId,string ProductId)
+        public async Task<IActionResult> AddItemToCart([FromQuery] string UserId, string ProductId)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState.GetErrorMessages());
 
-            var existingProduct = await _context.Product.FindAsync(ProductId);
+            //var existingProduct = await _context.Product.FindAsync(ProductId);
+            var existingProduct = await _context.Product.FirstOrDefaultAsync(p => p.productId == ProductId);
             var existingUser = await _userManager.FindByIdAsync(UserId);
             if (existingProduct == null)
-                return BadRequest("Item Not Found");
-
-            var cartdetails = new Cart()
             {
-                productId = existingProduct.productId,
-                productName = existingProduct.productName,
-                productAmount = existingProduct.productAmount,
-                productImageUrl = existingProduct.productImageUrlPath,
-                productQuantityPurchased = 1,
-                productAvailability = existingProduct.productAvailabilty,
-                userId = existingUser.UserId,
-                userName = existingUser.UserName
-            };
+                return BadRequest("Item Not Found");
+            }
+            else
+            {
+
+                Cart cartDetails = new Cart()
+                {
+                    cartId = Guid.NewGuid().ToString(),
+                    productId = existingProduct.productId
+                
+                };
             
-            var cartItem = _mapper.Map<Cart>(cartdetails);
+            var cartItem = _mapper.Map<Cart>(cartDetails);
             var result = await _cartService.SaveAsync(cartItem);
 
             if (!result.success)
@@ -70,6 +72,7 @@ namespace aduaba.api.Controllers
 
             var CartResource = _mapper.Map<ShowCartResource>(result.cart);
             return Ok(CartResource);
+            }
         }
 
         [HttpPut]

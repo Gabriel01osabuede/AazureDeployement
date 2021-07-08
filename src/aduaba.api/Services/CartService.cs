@@ -66,7 +66,7 @@ namespace aduaba.api.Services
             if (existingCart == null)
                 return new CartResponse("Item Not Found.");
 
-            existingCart.productQuantityPurchased += cart.productQuantityPurchased;
+            //existingCart.productQuantityPurchased += cart.productQuantityPurchased;
             try
             {
                 _context.cart.Update(existingCart);

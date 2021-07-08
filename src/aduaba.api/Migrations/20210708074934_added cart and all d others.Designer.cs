@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using aduaba.api.AppDbContext;
 
 namespace aduaba.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210708074934_added cart and all d others")]
+    partial class addedcartandalldothers
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,17 +234,34 @@ namespace aduaba.api.Migrations
                     b.Property<string>("cartId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<string>("manufacturerName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("productAmount")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<bool>("productAvailability")
+                        .HasColumnType("bit");
 
                     b.Property<string>("productId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("productImageUrl")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("productName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("productQuantityPurchased")
+                        .HasColumnType("int");
+
+                    b.Property<string>("userId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("userName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("cartId");
-
-                    b.HasIndex("UserId");
-
-                    b.HasIndex("productId");
 
                     b.ToTable("cart");
                 });
@@ -380,21 +399,6 @@ namespace aduaba.api.Migrations
                         });
 
                     b.Navigation("RefreshTokens");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Cart", b =>
-                {
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.Product", "product")
-                        .WithMany()
-                        .HasForeignKey("productId");
-
-                    b.Navigation("product");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Product", b =>

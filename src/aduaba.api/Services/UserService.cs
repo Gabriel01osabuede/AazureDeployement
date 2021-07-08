@@ -106,17 +106,23 @@ namespace aduaba.api.Services
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
-                PhoneNumber = model.PhoneNumber
             };
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
             if (userWithSameEmail == null)
             {
-                var result = await _userManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
+                if(model.Password == model.ConfirmPassword)
                 {
-                    await _userManager.AddToRoleAsync(user, AuthorizationRoles.default_role.ToString());
+                    var result = await _userManager.CreateAsync(user, model.Password);
+                    if (result.Succeeded)
+                    {
+                        await _userManager.AddToRoleAsync(user, AuthorizationRoles.default_role.ToString());
+                    }
+                    return $"User Registered with username {user.UserName}";    
                 }
-                return $"User Registered with username {user.UserName}";
+                else
+                {
+                    return "password does not match";
+                }         
             }
             else
             {

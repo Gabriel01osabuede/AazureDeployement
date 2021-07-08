@@ -49,6 +49,16 @@ namespace aduaba.api.Services
         {
             return await _context.Product.ToListAsync();
         }
+        public async Task<IEnumerable<Product>> GetListOfProductsByNameAsync(string ProductName)
+        {
+            var products =  await ListAysnc();
+            
+            if (!string.IsNullOrEmpty(ProductName))
+            products = products.Where(d => d.productName.Contains(ProductName)).ToList();
+
+            return products;
+
+        }
 
         public async Task<IEnumerable<Product>> ListProductByCategoryIdAsync(string CategoryId)
         {
@@ -74,11 +84,11 @@ namespace aduaba.api.Services
             }
         }
 
-        public async Task<ProductResponse> GetProductById(string ProductId)
+        public async Task<Product> GetProductById(string ProductId)
         {
             var product = await _context.Product.FindAsync(ProductId);
 
-            return new ProductResponse(product);
+            return product;
         }
 
         public async Task<ProductResponse> UpdateAsync(string Id, Product product)
