@@ -10,8 +10,8 @@ namespace aduaba.api.Entities.ApplicationEntity
         public string cartId { get; set; } = Guid.NewGuid().ToString();
         public ApplicationUser User { get; set; }
         public string UserId { get; set; }
-        public IList<Product> Product { get; set; }
-        public string productId { get; set; }
+        
+        public List<CartItems> CartItem { get; set; }
 
 
         //public Product products { get; set; }

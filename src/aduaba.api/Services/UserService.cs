@@ -102,7 +102,7 @@ namespace aduaba.api.Services
         {
             var user = new ApplicationUser
             {
-                UserName = model.Username,
+                
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
@@ -110,19 +110,19 @@ namespace aduaba.api.Services
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
             if (userWithSameEmail == null)
             {
-                if(model.Password == model.ConfirmPassword)
+                if (model.Password == model.ConfirmPassword)
                 {
                     var result = await _userManager.CreateAsync(user, model.Password);
                     if (result.Succeeded)
                     {
                         await _userManager.AddToRoleAsync(user, AuthorizationRoles.default_role.ToString());
                     }
-                    return $"User Registered with username {user.UserName}";    
+                    return $"User Registered with username {user.UserName}";
                 }
                 else
                 {
                     return "password does not match";
-                }         
+                }
             }
             else
             {
@@ -195,7 +195,7 @@ namespace aduaba.api.Services
 
         public async Task<AuthenticationModel> UserLoginAsync(TokenRequestModel model)
         {
-            
+
             var authenticationModel = new AuthenticationModel();
             var user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null)
@@ -247,10 +247,12 @@ namespace aduaba.api.Services
             }
             var claims = new[]
             {
+
                         new Claim(JwtRegisteredClaimNames.Sub, user.UserName),
                         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
                         new Claim(JwtRegisteredClaimNames.Email, user.Email),
                         new Claim("uid", user.Id)
+
                     }
             .Union(userClaims)
             .Union(roleClaims);

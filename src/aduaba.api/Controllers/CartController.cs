@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using aduaba.api.AppDbContext;
 using aduaba.api.Entities.ApplicationEntity;
@@ -8,12 +9,15 @@ using aduaba.api.Extensions;
 using aduaba.api.Interface;
 using aduaba.api.Resource;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace aduaba.api.Controllers
 {
+    [ApiController]
+    [Authorize]
     public class CartController : Controller
     {
         private readonly ICartService _cartService;
@@ -31,48 +35,58 @@ namespace aduaba.api.Controllers
 
 
         [HttpGet]
-        [Route("/api/[controller]/AddCartItem")]
-        public async Task<IEnumerable<ShowCartResource>> GetAllCartAsync()
+        [Authorize]
+        [Route("/api/[controller]/GetCartItem")]
+        public async Task<List<ShowCartResource>> GetAllCartAsync()
         {
-            var existingCart = await _cartService.ListAsync();
-            var resource = _mapper.Map<IEnumerable<Cart>, IEnumerable<ShowCartResource>>(existingCart);
+            ShowCartResource view = default;
+            List<ShowCartResource> cartItems = new List<ShowCartResource>();
+            var CustomerEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var Customer = await _userManager.FindByEmailAsync(CustomerEmail);
 
-            return resource;
+            var existingCart = await _cartService.GetCart(Customer.Id);
+            foreach (var item in existingCart)
+            {
+
+                // sum = item.Product.Amount * item.Quantity;
+                view = new ShowCartResource
+                {
+                    productId = item.Product.productId,
+                    cartId = item.Id,
+                    productImageUrl = item.Product.productImageUrlPath,
+                    productName = item.Product.productName,
+                    productAmount = item.Product.productAmount,
+                    productQuantityPurchased = item.Quantity,
+                    productAvailability = item.Product.productAvailabilty
+                };
+                cartItems.Add(view);
+            }
+            //var resource = _mapper.Map<List<Cart>, List<ShowCartResource>>(cartItems);
+            return cartItems;
+            
+
+
         }
 
         [HttpPost]
+        [Authorize(Roles = "User")]
         [Route("/api/[controller]/AddCartItem")]
-        public async Task<IActionResult> AddItemToCart([FromQuery] string UserId, string ProductId)
+        public async Task<IActionResult> AddItemToCart([FromQuery] string productId, int quantity)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
-
-            //var existingProduct = await _context.Product.FindAsync(ProductId);
-            var existingProduct = await _context.Product.FirstOrDefaultAsync(p => p.productId == ProductId);
-            var existingUser = await _userManager.FindByIdAsync(UserId);
-            if (existingProduct == null)
             {
-                return BadRequest("Item Not Found");
+                return BadRequest(ModelState.GetErrorMessages());
             }
             else
             {
+                var CustomerEmail = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var Customer = await _userManager.FindByEmailAsync(CustomerEmail);
+                await _cartService.AddToCart(productId, Customer.Id, quantity);
 
-                Cart cartDetails = new Cart()
-                {
-                    cartId = Guid.NewGuid().ToString(),
-                    productId = existingProduct.productId
-                
-                };
-            
-            var cartItem = _mapper.Map<Cart>(cartDetails);
-            var result = await _cartService.SaveAsync(cartItem);
-
-            if (!result.success)
-                return BadRequest(result.message);
-
-            var CartResource = _mapper.Map<ShowCartResource>(result.cart);
-            return Ok(CartResource);
+                return Ok("Item added Successfully.");
             }
+
+
         }
 
         [HttpPut]

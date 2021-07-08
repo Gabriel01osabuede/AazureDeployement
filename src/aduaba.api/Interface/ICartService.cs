@@ -7,9 +7,10 @@ namespace aduaba.api.Interface
 {
     public interface ICartService
     {
-       Task<IEnumerable<Cart>> ListAsync();
-       Task<CartResponse> SaveAsync(Cart cart);
+        Task<List<CartItems>> GetCart(string UserId);
+        Task<CartResponse> SaveAsync(Cart cart);
        Task<CartResponse> UpdateAsync(string Id, Cart cart);
        Task<CartResponse> DeleteAsync(string Id);
+       Task AddToCart(string ProductId, string UserId, int Quantity = 1);
     }
 }
