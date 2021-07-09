@@ -55,6 +55,7 @@ namespace aduaba.api
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IProductInterface, ProductService>();
             services.AddScoped<ICategoryInterface, CategoryService>();
+            services.AddScoped<IWishListInterface, WishListService>();
 
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));

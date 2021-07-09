@@ -18,6 +18,10 @@ namespace aduaba.api.AppDbContext
         public DbSet<Product> Product { get; set; }
         public DbSet<Cart> cart { get; set; }
         public DbSet<CartItems> CartItems { get; set; }
+        public DbSet<WishList> WishList { get; set; }
+        public DbSet<WishListItem> wishListItems { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
