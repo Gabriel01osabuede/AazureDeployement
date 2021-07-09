@@ -102,10 +102,11 @@ namespace aduaba.api.Services
         {
             var user = new ApplicationUser
             {
-                
+
                 Email = model.Email,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
+                UserName = model.Email,
             };
             var userWithSameEmail = await _userManager.FindByEmailAsync(model.Email);
             if (userWithSameEmail == null)
@@ -117,7 +118,7 @@ namespace aduaba.api.Services
                     {
                         await _userManager.AddToRoleAsync(user, AuthorizationRoles.default_role.ToString());
                     }
-                    return $"User Registered with username {user.UserName}";
+                    return $"User Registered with username {user.Email}";
                 }
                 else
                 {
