@@ -9,8 +9,9 @@ namespace aduaba.api.Entities.ApplicationEntity
         public string productImageUrlPath { get; set; }
         public string productName { get; set; }
         public string productDescription { get; set; }
-        [Column(TypeName = "decimal(18, 2)")]
+        [Column(TypeName = "Money")]
         public decimal productAmount { get; set; }
+        public string ManufactureName { get; set; }
         public bool productAvailabilty { get; set; } = true;
         public DateTime createdDate { get; set; } = DateTime.Now;
 

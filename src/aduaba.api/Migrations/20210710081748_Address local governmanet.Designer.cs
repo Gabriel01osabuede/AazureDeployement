@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using aduaba.api.AppDbContext;
 
 namespace aduaba.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210710081748_Address local governmanet")]
+    partial class Addresslocalgovernmanet
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -327,9 +329,6 @@ namespace aduaba.api.Migrations
                     b.Property<string>("productId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ManufactureName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("categoryId")
                         .HasColumnType("nvarchar(450)");
 
@@ -337,7 +336,7 @@ namespace aduaba.api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("productAmount")
-                        .HasColumnType("Money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("productAvailabilty")
                         .HasColumnType("bit");

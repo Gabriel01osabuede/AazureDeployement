@@ -56,6 +56,7 @@ namespace aduaba.api
             services.AddScoped<IProductInterface, ProductService>();
             services.AddScoped<ICategoryInterface, CategoryService>();
             services.AddScoped<IWishListInterface, WishListService>();
+            services.AddScoped<IAddressInterface, AddressService >();
 
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));
@@ -128,7 +129,9 @@ namespace aduaba.api
             string[] roles = new string[] {
                 "Administrator","Moderator","User"
             };
-            var userEmail = "gabriel@gmail.com";
+            var FirstName = "Andrey";
+            var LastName = "Gabriel";
+            var userEmail = "AndyGabriel@gmail.com";
             var userPassword = "Osabu100.";
 
             var roleManager = svp.GetRequiredService<RoleManager<IdentityRole>>();
@@ -147,10 +150,12 @@ namespace aduaba.api
             {
                 user = new ApplicationUser
                 {
+                    FirstName = FirstName,
+                    LastName = LastName,
                     Email = userEmail,
                     UserName = userEmail,
                     EmailConfirmed = true,
-                    PhoneNumber = "+2349087675632",
+                    PhoneNumber = "+2349087675652",
                     PhoneNumberConfirmed = true
                 };
 

@@ -128,21 +128,5 @@ namespace aduaba.api.Services
                 }
             }
         }
-
-        public async Task<WishListResponse> SaveAsync(WishList wishList)
-        {
-            
-            try
-            {
-                await _context.WishList.AddAsync(wishList);
-                await _unitOfWork.CompleteAsync();
-
-                return new WishListResponse(wishList);
-            }
-            catch (Exception ex)
-            {
-                return new WishListResponse(ex.Message);
-            }
-        }
     }
 }

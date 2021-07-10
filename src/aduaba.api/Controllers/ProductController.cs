@@ -29,7 +29,7 @@ namespace aduaba.api.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/AddProduct")]
         public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
@@ -37,13 +37,16 @@ namespace aduaba.api.Controllers
                 return BadRequest(ModelState.GetErrorMessages());
 
             string imagePath = addProduct.productImageFilePath;
+            var convertToBase64 = ImageUpload.GetBase64StringForImage(imagePath);
+                
             Product product = new Product()
             {
 
                 productName = addProduct.productName,
                 productAmount = addProduct.productAmount,
                 productDescription = addProduct.productDescription,
-                productImageUrlPath = ImageUpload.ImageUploads(imagePath),
+                ManufactureName = addProduct.ManufactureName, 
+                productImageUrlPath = ImageUpload.ImageUploads(convertToBase64),
                 categoryId = addProduct.categoryId
             };
 
@@ -118,12 +121,13 @@ namespace aduaba.api.Controllers
                 productName = responseBody.productName,
                 productAmount = responseBody.productAmount,
                 productDescription = responseBody.productDescription,
+                ManufactureName = responseBody.ManufactureName, 
                 categoryId = responseBody.categoryId,
                 productAvailabilty = responseBody.productAvailabilty
             };
             if (!(string.IsNullOrEmpty(responseBody.productImageFilePath)))
-            {
-                product.productImageUrlPath = ImageUpload.ImageUploads(responseBody.productImageFilePath);
+            {   var convertToBase64 = ImageUpload.GetBase64StringForImage(responseBody.productImageFilePath);
+                product.productImageUrlPath = ImageUpload.ImageUploads(convertToBase64);
             };
             var result = await _productService.UpdateAsync(Id, product);
 

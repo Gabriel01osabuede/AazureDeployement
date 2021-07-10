@@ -126,7 +126,8 @@ namespace aduaba.api.Controllers
             };
             if (!(string.IsNullOrEmpty(model.ProfileImageFilePath)))
             {
-                ApplicationUser.ProfileImageUrl = ImageUpload.ImageUploads(model.ProfileImageFilePath);
+                var convertToBase64 = ImageUpload.GetBase64StringForImage(model.ProfileImageFilePath);
+                ApplicationUser.ProfileImageUrl = ImageUpload.ImageUploads(convertToBase64);
             };
 
             var result = await _userService.UpdateUserAsync(Id, ApplicationUser);

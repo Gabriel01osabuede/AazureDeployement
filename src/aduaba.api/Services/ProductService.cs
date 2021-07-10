@@ -105,6 +105,10 @@ namespace aduaba.api.Services
             {
                 existingProduct.productName = product.productName;
             }
+            if(!(string.IsNullOrEmpty(product.ManufactureName)))
+            {
+                existingProduct.ManufactureName = product.ManufactureName;
+            }
             if (!product.productAmount.Equals(null))
             {
                 existingProduct.productAmount = product.productAmount;

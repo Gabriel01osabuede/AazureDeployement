@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using aduaba.api.AppDbContext;
 
 namespace aduaba.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210710073720_Address relationship")]
+    partial class Addressrelationship
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -173,10 +175,6 @@ namespace aduaba.api.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("localGovernmentArea")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("state")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -327,9 +325,6 @@ namespace aduaba.api.Migrations
                     b.Property<string>("productId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("ManufactureName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("categoryId")
                         .HasColumnType("nvarchar(450)");
 
@@ -337,7 +332,7 @@ namespace aduaba.api.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("productAmount")
-                        .HasColumnType("Money");
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<bool>("productAvailabilty")
                         .HasColumnType("bit");
@@ -447,7 +442,7 @@ namespace aduaba.api.Migrations
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Address", b =>
                 {
                     b.HasOne("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", "User")
-                        .WithMany()
+                        .WithMany("UserAddress")
                         .HasForeignKey("UserId");
 
                     b.Navigation("User");
@@ -543,6 +538,11 @@ namespace aduaba.api.Migrations
                     b.Navigation("Product");
 
                     b.Navigation("wishList");
+                });
+
+            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", b =>
+                {
+                    b.Navigation("UserAddress");
                 });
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Cart", b =>

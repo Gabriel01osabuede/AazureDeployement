@@ -133,20 +133,6 @@ namespace aduaba.api.Services
                 }
             }
         }
-        public async Task<CartResponse> SaveAsync(Cart cart)
-        {
-            try
-            {
-                await _context.cart.AddAsync(cart);
-                await _unitOfWork.CompleteAsync();
-
-                return new CartResponse(cart);
-            }
-            catch (Exception ex)
-            {
-                return new CartResponse(ex.Message);
-            }
-        }
 
         public async Task<CartResponse> UpdateAsync(string Id, Cart cart)
         {
