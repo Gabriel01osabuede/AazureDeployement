@@ -50,8 +50,10 @@ namespace aduaba.api.Controllers
             {
 
                 categoryName = addresource.categoryName,
-                categoryImage = ImageUpload.ImageUploads(addresource.categoryImageFilePath)
+                
             };
+            var convertToBase64 = ImageUpload.GetBase64StringForImage(addresource.categoryImageFilePath);
+            category.categoryImage = ImageUpload.ImageUploads(convertToBase64);
             // addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
             // var category = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(category);
@@ -75,8 +77,12 @@ namespace aduaba.api.Controllers
             var Category = new Category()
             {
                 categoryName = putResource.categoryName,
-                categoryImage = ImageUpload.ImageUploads(putResource.categoryImageFilePath)
+                
             };
+            
+            var convertToBase64 = ImageUpload.GetBase64StringForImage(putResource.categoryImageFilePath);
+            Category.categoryImage = ImageUpload.ImageUploads(convertToBase64);
+            
             var result = await _categoryService.UpdateAsync(Id, Category);
 
             if (!result.success)
