@@ -21,6 +21,11 @@ namespace aduaba.api.AppDbContext
         public DbSet<WishList> WishList { get; set; }
         public DbSet<WishListItem> wishListItems { get; set; }
         public DbSet<Address> addresses { get; set; }
+        public DbSet<Order> Order { get; set; }
+        public DbSet<OrderStatus> OrderStatus { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        
+        
 
 
 

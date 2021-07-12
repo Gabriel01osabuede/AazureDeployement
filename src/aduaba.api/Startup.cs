@@ -21,6 +21,7 @@ using aduaba.api.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using aduaba.api.Utility;
 
 namespace aduaba.api
 {
@@ -57,6 +58,11 @@ namespace aduaba.api
             services.AddScoped<ICategoryInterface, CategoryService>();
             services.AddScoped<IWishListInterface, WishListService>();
             services.AddScoped<IAddressInterface, AddressService >();
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IImageUpload, ImageUpload>();
+
+            //Cloudinary Settings
+            services.Configure<CloudinarySettings>(Configuration);
 
             //Configuration from AppSettings
             services.Configure<JWT>(Configuration.GetSection("JWT"));
@@ -85,6 +91,8 @@ namespace aduaba.api
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Key"]))
                     };
                 });
+
+            
 
 
         }

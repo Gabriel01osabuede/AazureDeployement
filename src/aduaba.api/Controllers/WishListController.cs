@@ -47,7 +47,7 @@ namespace aduaba.api.Controllers
 
                 view = new ShowWishListResource
                 {
-                    productId = item.Product.productId,
+                    productId = item.Product.Id,
                     Id = item.Id,
                     productImageUrl = item.Product.productImageUrlPath,
                     productName = item.Product.productName,

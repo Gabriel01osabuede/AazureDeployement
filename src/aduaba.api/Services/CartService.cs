@@ -29,7 +29,7 @@ namespace aduaba.api.Services
 
             var userCart = await _context.cart.Include(p => p.CartItem)
                                 .Where(p => p.UserId == UserId).ToListAsync();
-            var product = await _context.Product.FirstOrDefaultAsync(c => c.productId == ProductId);
+            var product = await _context.Product.FirstOrDefaultAsync(c => c.Id == ProductId);
             if (userCart == null)
             {
                 CartItems cartItem = new CartItems
@@ -116,7 +116,7 @@ namespace aduaba.api.Services
                     {
                         foreach (var cart in item.CartItem)
                         {
-                            cart.Product = _context.Product.First(c => c.productId == cart.ProductId);
+                            cart.Product = _context.Product.First(c => c.Id == cart.ProductId);
                             cartList = new CartItems
                             {
                                 Id = cart.CartId,

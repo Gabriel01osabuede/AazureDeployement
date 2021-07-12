@@ -83,17 +83,17 @@ namespace aduaba.api.Services
             var existingAddress = await _context.addresses.FindAsync(Id);
             if (existingAddress == null)
                 return new AddressResponse("Address Not Found");
-            if (!(string.IsNullOrEmpty(address.HouseNumber)))
+            if (!(string.IsNullOrEmpty(address.UserAddress)))
             {
-                existingAddress.HouseNumber = address.HouseNumber;
+                existingAddress.UserAddress = address.UserAddress;
             }
-            if (!(string.IsNullOrEmpty(address.state)))
+            if (!(string.IsNullOrEmpty(address.State)))
             {
-                existingAddress.state = address.state;
+                existingAddress.State = address.State;
             }
-            if (!(string.IsNullOrEmpty(address.country)))
+            if (!(string.IsNullOrEmpty(address.Country)))
             {
-                existingAddress.country = address.country;
+                existingAddress.Country = address.Country;
             }
             if (!(string.IsNullOrEmpty(address.PhoneNumber)))
             {

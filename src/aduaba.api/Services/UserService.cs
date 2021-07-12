@@ -178,6 +178,10 @@ namespace aduaba.api.Services
             {
                 existinguser.ProfileImageUrl = model.ProfileImageUrl;
             }
+            if(!(string.IsNullOrEmpty(model.PhoneNumber)))
+            {
+                existinguser.PhoneNumber = model.PhoneNumber;
+            }
 
             try
             {

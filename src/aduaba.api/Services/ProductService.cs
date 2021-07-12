@@ -13,11 +13,12 @@ namespace aduaba.api.Services
     public class ProductService : IProductInterface
     {
         private readonly ApplicationDbContext _context;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public ProductService(
-            ApplicationDbContext context)
+        public ProductService(ApplicationDbContext context, IUnitOfWork unitOfWork)
         {
             _context = context;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task CompleteAsync()
@@ -35,7 +36,7 @@ namespace aduaba.api.Services
             try
             {
                 _context.Product.Remove(existingProduct);
-                await CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
                 return new ProductResponse(existingProduct);
             }
@@ -51,10 +52,10 @@ namespace aduaba.api.Services
         }
         public async Task<IEnumerable<Product>> GetListOfProductsByNameAsync(string ProductName)
         {
-            var products =  await ListAysnc();
-            
+            var products = await ListAysnc();
+
             if (!string.IsNullOrEmpty(ProductName))
-            products = products.Where(d => d.productName.Contains(ProductName)).ToList();
+                products = products.Where(d => d.productName.Contains(ProductName)).ToList();
 
             return products;
 
@@ -63,7 +64,7 @@ namespace aduaba.api.Services
         public async Task<IEnumerable<Product>> ListProductByCategoryIdAsync(string CategoryId)
         {
             var products = await _context.Product
-                                .Where(s => s.categoryId == CategoryId)
+                                .Where(s => s.CategoryId == CategoryId)
                                 .ToListAsync();
 
             return products;
@@ -74,7 +75,7 @@ namespace aduaba.api.Services
             try
             {
                 await _context.Product.AddAsync(product);
-                await CompleteAsync();
+                await _unitOfWork.CompleteAsync();
 
                 return new ProductResponse(product);
             }
@@ -91,46 +92,6 @@ namespace aduaba.api.Services
             return product;
         }
 
-        public async Task<ProductResponse> UpdateAsync(string Id, Product product)
-        {
-            var existingProduct = await _context.Product.FindAsync(Id);
-            if (existingProduct == null)
-                return new ProductResponse("Product Not Found");
 
-            if (!(string.IsNullOrEmpty(product.productImageUrlPath)))
-            {
-                existingProduct.productImageUrlPath = product.productImageUrlPath;
-            }
-            if (!(string.IsNullOrEmpty(product.productName)))
-            {
-                existingProduct.productName = product.productName;
-            }
-            if(!(string.IsNullOrEmpty(product.ManufactureName)))
-            {
-                existingProduct.ManufactureName = product.ManufactureName;
-            }
-            if (!product.productAmount.Equals(null))
-            {
-                existingProduct.productAmount = product.productAmount;
-            }
-            if (!(string.IsNullOrEmpty(product.productDescription)))
-            {
-                existingProduct.productDescription = product.productDescription;
-            }
-
-            existingProduct.productAvailabilty = product.productAvailabilty;
-
-            try
-            {
-                _context.Product.Update(product);
-                await CompleteAsync();
-
-                return new ProductResponse(existingProduct);
-            }
-            catch (Exception ex)
-            {
-                return new ProductResponse($"An error occurred when Updating the product : {ex.Message}");
-            }
-        }
     }
 }

@@ -19,17 +19,19 @@ namespace aduaba.api.Controllers
         private readonly IProductInterface _productService;
         private readonly IMapper _mapper;
         private readonly ApplicationDbContext _context;
+        private readonly IImageUpload _imageUpload;
 
-        public ProductController(ApplicationDbContext context, IProductInterface productService, IMapper mapper)
+        public ProductController(ApplicationDbContext context, IProductInterface productService, IMapper mapper, IImageUpload imageUpload)
         {
             _productService = productService;
             _mapper = mapper;
             _context = context;
+            _imageUpload = imageUpload;
         }
 
         [HttpPost]
         [AllowAnonymous]
-        [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/AddProduct")]
         public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
@@ -38,16 +40,16 @@ namespace aduaba.api.Controllers
 
             string imagePath = addProduct.productImageFilePath;
             var convertToBase64 = ImageUpload.GetBase64StringForImage(imagePath);
-                
+
             Product product = new Product()
             {
 
                 productName = addProduct.productName,
                 productAmount = addProduct.productAmount,
                 productDescription = addProduct.productDescription,
-                ManufactureName = addProduct.ManufactureName, 
-                productImageUrlPath = ImageUpload.ImageUploads(convertToBase64),
-                categoryId = addProduct.categoryId
+                ManufactureName = addProduct.ManufactureName,
+                productImageUrlPath = _imageUpload.ImageUploads(convertToBase64),
+                CategoryId = addProduct.categoryId
             };
 
             var result = await _productService.SaveAsync(product);
@@ -107,37 +109,37 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator")]
+        // [Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         [Route("/api/[controller]/UpdateProduct")]
         public async Task<IActionResult> UpdateProductById([FromQuery] string Id, [FromBody] UpdateProductResource responseBody)
         {
-            if (!ModelState.IsValid)
-                return BadRequest(ModelState.GetErrorMessages());
-
-
-            Product product = new Product()
+            var existingProduct = await _context.Product.FindAsync(Id);
+            if(existingProduct != null)
             {
 
-                productName = responseBody.productName,
-                productAmount = responseBody.productAmount,
-                productDescription = responseBody.productDescription,
-                ManufactureName = responseBody.ManufactureName, 
-                categoryId = responseBody.categoryId,
-                productAvailabilty = responseBody.productAvailabilty
-            };
-            if (!(string.IsNullOrEmpty(responseBody.productImageFilePath)))
-            {   var convertToBase64 = ImageUpload.GetBase64StringForImage(responseBody.productImageFilePath);
-                product.productImageUrlPath = ImageUpload.ImageUploads(convertToBase64);
-            };
-            var result = await _productService.UpdateAsync(Id, product);
+                existingProduct.productName = responseBody.productName;
+                existingProduct.productAmount = responseBody.productAmount;
+                existingProduct.productDescription = responseBody.productDescription;
+                existingProduct.ManufactureName = responseBody.ManufactureName;
+                existingProduct.CategoryId = responseBody.categoryId;
+                existingProduct.productAvailabilty = responseBody.productAvailabilty;
 
-            if (!result.success)
-                return BadRequest(result.message);
+                if (!(string.IsNullOrEmpty(responseBody.productImageFilePath)))
+                {
+                    var convertToBase64 = ImageUpload.GetBase64StringForImage(responseBody.productImageFilePath);
+                    existingProduct.productImageUrlPath = _imageUpload.ImageUploads(convertToBase64);
+                };
 
-            var productResource = _mapper.Map<Product, UpdateProductResource>(result.product);
+                var update = _context.Product.Update(existingProduct);
+                await _context.SaveChangesAsync();
+                 return Ok(existingProduct);
+            }
+            else{
+                return NotFound("Product Not Found");
+            }
 
-            return Ok(productResource);
-        }
+    }
 
         [HttpDelete]
         [Authorize(Roles = "Administrator")]

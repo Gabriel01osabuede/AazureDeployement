@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using aduaba.api.AppDbContext;
 
 namespace aduaba.api.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20210711122819_eddited the category field")]
+    partial class edditedthecategoryfield
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -152,33 +154,36 @@ namespace aduaba.api.Migrations
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Address", b =>
                 {
-                    b.Property<string>("AddressId")
+                    b.Property<string>("addressId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<string>("AdditionalPhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Country")
+                    b.Property<string>("HouseNumber")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("PhoneNumber")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("State")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserAddress")
+                    b.Property<string>("Street")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("AddressId");
+                    b.Property<string>("country")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("localGovernmentArea")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("state")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("addressId");
 
                     b.HasIndex("UserId");
 
@@ -288,9 +293,6 @@ namespace aduaba.api.Migrations
                     b.Property<decimal>("CartItemTotalPrice")
                         .HasColumnType("Money");
 
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
                     b.Property<string>("ProductId")
                         .HasColumnType("nvarchar(450)");
 
@@ -301,8 +303,6 @@ namespace aduaba.api.Migrations
 
                     b.HasIndex("CartId");
 
-                    b.HasIndex("OrderId");
-
                     b.HasIndex("ProductId");
 
                     b.ToTable("CartItems");
@@ -310,7 +310,7 @@ namespace aduaba.api.Migrations
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Category", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("categoryId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("categoryImage")
@@ -319,101 +319,14 @@ namespace aduaba.api.Migrations
                     b.Property<string>("categoryName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("categoryId");
 
                     b.ToTable("Category");
                 });
 
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Order", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("OrderDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("OrderReferenceNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("OrderStatusId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<string>("OrderType")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("ShippingAddressId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("TotalAmountToPay")
-                        .HasColumnType("Money");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderStatusId");
-
-                    b.HasIndex("ShippingAddressId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Order");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.OrderStatus", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<bool>("PaymentStatus")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Status")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("OrderStatus");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Payment", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("Money");
-
-                    b.Property<string>("OrderId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<DateTime>("PaymentDateTime")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("PaymentReferenceNumber")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PaymentStatus")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("OrderId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Payments");
-                });
-
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Product", b =>
                 {
-                    b.Property<string>("Id")
+                    b.Property<string>("productId")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("CategoryId")
@@ -440,7 +353,7 @@ namespace aduaba.api.Migrations
                     b.Property<string>("productName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+                    b.HasKey("productId");
 
                     b.HasIndex("CategoryId");
 
@@ -537,9 +450,7 @@ namespace aduaba.api.Migrations
                 {
                     b.HasOne("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", "User")
                         .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -594,10 +505,6 @@ namespace aduaba.api.Migrations
                         .WithMany("CartItem")
                         .HasForeignKey("CartId");
 
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.Order", null)
-                        .WithMany("OrderItems")
-                        .HasForeignKey("OrderId");
-
                     b.HasOne("aduaba.api.Entities.ApplicationEntity.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId");
@@ -605,42 +512,6 @@ namespace aduaba.api.Migrations
                     b.Navigation("Cart");
 
                     b.Navigation("Product");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Order", b =>
-                {
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.OrderStatus", "OrderStatus")
-                        .WithMany()
-                        .HasForeignKey("OrderStatusId");
-
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.Address", "ShippingAddress")
-                        .WithMany()
-                        .HasForeignKey("ShippingAddressId");
-
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("OrderStatus");
-
-                    b.Navigation("ShippingAddress");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Payment", b =>
-                {
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.Order", "Order")
-                        .WithMany()
-                        .HasForeignKey("OrderId");
-
-                    b.HasOne("aduaba.api.Entities.ApplicationEntity.ApplicationUserModels.ApplicationUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
-
-                    b.Navigation("Order");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Product", b =>
@@ -684,11 +555,6 @@ namespace aduaba.api.Migrations
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Category", b =>
                 {
                     b.Navigation("products");
-                });
-
-            modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.Order", b =>
-                {
-                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("aduaba.api.Entities.ApplicationEntity.WishList", b =>

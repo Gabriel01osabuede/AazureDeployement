@@ -51,7 +51,7 @@ namespace aduaba.api.Controllers
                 // sum = item.Product.Amount * item.Quantity;
                 view = new ShowCartResource
                 {
-                    productId = item.Product.productId,
+                    productId = item.Product.Id,
                     cartId = item.Id,
                     productImageUrl = item.Product.productImageUrlPath,
                     productName = item.Product.productName,

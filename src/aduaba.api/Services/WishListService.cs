@@ -28,7 +28,7 @@ namespace aduaba.api.Services
 
             var userWishList = await _context.WishList.Include(p => p.WishListItems)
                                 .Where(p => p.UserId == UserId).ToListAsync();
-            var product = await _context.Product.FirstOrDefaultAsync(c => c.productId == ProductId);
+            var product = await _context.Product.FirstOrDefaultAsync(c => c.Id == ProductId);
             if (userWishList == null)
             {
                 WishListItem wishListItem = new WishListItem
@@ -112,7 +112,7 @@ namespace aduaba.api.Services
                     {
                         foreach (var wishList in item.WishListItems)
                         {
-                            wishList.Product = _context.Product.First(c => c.productId == wishList.ProductId);
+                            wishList.Product = _context.Product.First(c => c.Id == wishList.ProductId);
                             wishListItem = new WishListItem
                             {
                                 Id = wishList.Id,

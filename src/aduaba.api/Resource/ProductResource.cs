@@ -2,7 +2,7 @@ namespace aduaba.api.Resource
 {
     public class ProductResource
     {
-        public string productId { get; set; }
+        public string Id { get; set; }
         public string productImageUrlPath { get; set; }
         public string productName { get; set; }
         public string productDescription { get; set; }

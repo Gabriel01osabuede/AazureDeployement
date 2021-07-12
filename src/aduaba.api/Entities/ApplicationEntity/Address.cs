@@ -7,18 +7,17 @@ namespace aduaba.api.Entities.ApplicationEntity
     public class Address
     {
         [Key]
-        public string addressId { get; set; } = Guid.NewGuid().ToString();
+        public string AddressId { get; set; } = Guid.NewGuid().ToString();
         [Required]
-        public string country { get; set; }
+        public string Country { get; set; }
         [Required]
-        public string state { get; set; }
+        public string State { get; set; }
+        [Required]
         public string PhoneNumber { get; set; }
+        public string AdditionalPhoneNumber { get; set; }
         [Required]
-        public string Street { get; set; }
+        public string UserAddress { get; set; }
         [Required]
-        public string localGovernmentArea { get; set; }
-        [Required]
-        public string HouseNumber { get; set; }
         public ApplicationUser User { get; set; }
         public string UserId { get; set; }
 

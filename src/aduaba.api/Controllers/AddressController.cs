@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aduaba.api.Controllers
 {
-    [Authorize]
+    //[Authorize]
     [ApiController]
     public class AddressController : Controller
     {
@@ -46,15 +46,13 @@ namespace aduaba.api.Controllers
 
                 view = new ShowAddressResource
                 {
-
                     UserName = item.User.FirstName + " " + item.User.LastName,
-                    Street = item.Street,
-                    HouseNumber = item.HouseNumber,
-                    localGovernmentArea = item.localGovernmentArea,
-                    State = item.state,
-                    Country = item.country,
+                    State = item.State,
+                    Address = item.UserAddress,
+                    Country = item.Country,
                     PhoneNumber = item.PhoneNumber,
-                    addressId = item.addressId
+                    AdditionalPhoneNumber = item.AdditionalPhoneNumber,
+                    addressId = item.AddressId
                 };
                 AddressListItems.Add(view);
             }

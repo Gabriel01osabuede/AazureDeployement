@@ -16,12 +16,14 @@ namespace aduaba.api.Controllers
     public class CategoryController : Controller
     {
         private readonly ICategoryInterface _categoryService;
+        private readonly IImageUpload _imageUpload;
         private readonly IMapper _mapper;
 
-        public CategoryController(ICategoryInterface categoryService, IMapper mapper)
+        public CategoryController(ICategoryInterface categoryService, IMapper mapper,IImageUpload imageUpload)
         {
             _categoryService = categoryService;
             _mapper = mapper;
+            _imageUpload = imageUpload;
         }
 
 
@@ -36,10 +38,11 @@ namespace aduaba.api.Controllers
             return resources;
         }
 
-        
+
 
         [HttpPost]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         [Route("/api/[controller]/PostCategory")]
         public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
         {
@@ -48,12 +51,10 @@ namespace aduaba.api.Controllers
 
             var category = new Category()
             {
-
                 categoryName = addresource.categoryName,
-                
             };
             var convertToBase64 = ImageUpload.GetBase64StringForImage(addresource.categoryImageFilePath);
-            category.categoryImage = ImageUpload.ImageUploads(convertToBase64);
+            category.categoryImage = _imageUpload.ImageUploads(convertToBase64);
             // addresource.categoryImageFilePath = ImageUpload.ImageUploads(addresource.categoryImageFilePath);
             // var category = _mapper.Map<AddCategoryResource, Category>(addresource);
             var result = await _categoryService.SaveAsync(category);
@@ -67,7 +68,8 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
+        [AllowAnonymous]
         [Route("/api/[controller]/UpdateCategory")]
         public async Task<IActionResult> PutAsync([FromQuery] string Id, [FromBody] AddCategoryResource putResource)
         {
@@ -77,12 +79,12 @@ namespace aduaba.api.Controllers
             var Category = new Category()
             {
                 categoryName = putResource.categoryName,
-                
+
             };
-            
+
             var convertToBase64 = ImageUpload.GetBase64StringForImage(putResource.categoryImageFilePath);
-            Category.categoryImage = ImageUpload.ImageUploads(convertToBase64);
-            
+            Category.categoryImage = _imageUpload.ImageUploads(convertToBase64);
+
             var result = await _categoryService.UpdateAsync(Id, Category);
 
             if (!result.success)

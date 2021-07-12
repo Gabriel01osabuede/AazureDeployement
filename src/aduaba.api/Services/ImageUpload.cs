@@ -1,14 +1,30 @@
 using System;
+using aduaba.api.Interface;
+using aduaba.api.Utility;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
+using Microsoft.Extensions.Options;
 
 namespace aduaba.api.Services
 {
-    public class ImageUpload
+    public class ImageUpload : IImageUpload
     {
-        public static string ImageUploads(string base64String)
+        private readonly IOptions<CloudinarySettings> _settings;
+
+        public ImageUpload(
+            IOptions<CloudinarySettings> settings
+        )
         {
-            var myAccount = new Account { ApiKey = "394658146624914", ApiSecret = "XhY1ShBFcosd5syu14ZWmTNF4YY", Cloud = "osabuedegabriel" };
+            _settings = settings;
+        }
+
+        public string ImageUploads(string base64String)
+        {
+            var apikey = _settings.Value.CloudinaryApiKey;
+            var secret = _settings.Value.CloudinarySecret;
+            var cloudName = _settings.Value.CloudinaryCloudName;
+
+            var myAccount = new Account { ApiKey = apikey, ApiSecret = secret, Cloud = cloudName };
             Cloudinary _cloudinary = new Cloudinary(myAccount);
             _cloudinary.Api.Secure = true;
 

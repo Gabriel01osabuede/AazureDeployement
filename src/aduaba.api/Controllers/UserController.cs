@@ -18,10 +18,12 @@ namespace aduaba.api.Controllers
     {
         private readonly IUserInterface _userService;
         private readonly UserManager<ApplicationUser> _userManager;
-        public UserController(IUserInterface userService, UserManager<ApplicationUser> userManager)
+        private readonly IImageUpload _imageUpload;
+        public UserController(IUserInterface userService, UserManager<ApplicationUser> userManager,IImageUpload imageUpload)
         {
             _userService = userService;
             _userManager = userManager;
+            _imageUpload = imageUpload;
         }
 
         [HttpPost]
@@ -107,7 +109,8 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        [Authorize(Roles = "User")]
+        //[Authorize(Roles = "User")]
+        [AllowAnonymous]
         [Route("/api/[controller]/UpdateUser")]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string Id, [FromBody] UpdateUser model)
         {
@@ -127,12 +130,12 @@ namespace aduaba.api.Controllers
             if (!(string.IsNullOrEmpty(model.ProfileImageFilePath)))
             {
                 var convertToBase64 = ImageUpload.GetBase64StringForImage(model.ProfileImageFilePath);
-                ApplicationUser.ProfileImageUrl = ImageUpload.ImageUploads(convertToBase64);
+                ApplicationUser.ProfileImageUrl = _imageUpload.ImageUploads(convertToBase64);
             };
 
             var result = await _userService.UpdateUserAsync(Id, ApplicationUser);
 
-            return Ok($"Your Details have been Updated Successfully : {model}");
+            return Ok(model);
 
         }
 
