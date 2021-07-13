@@ -14,7 +14,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace aduaba.api.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [ApiController]
     public class AddressController : Controller
     {

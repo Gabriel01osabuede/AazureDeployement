@@ -30,8 +30,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
-        // [Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/AddProduct")]
         public async Task<IActionResult> PostProductAsync([FromBody] AddProductResource addProduct)
         {
@@ -109,8 +108,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        // [Authorize(Roles = "Administrator")]
-        [AllowAnonymous]
+        [Authorize(Roles = "Administrator")]
         [Route("/api/[controller]/UpdateProduct")]
         public async Task<IActionResult> UpdateProductById([FromQuery] string Id, [FromBody] UpdateProductResource responseBody)
         {

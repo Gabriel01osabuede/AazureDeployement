@@ -41,7 +41,7 @@ namespace aduaba.api.Controllers
 
 
         [HttpPost]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [AllowAnonymous]
         [Route("/api/[controller]/PostCategory")]
         public async Task<IActionResult> PostAsync([FromBody] AddCategoryResource addresource)
@@ -68,7 +68,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "Administrator")]
+        [Authorize(Roles = "Administrator")]
         [AllowAnonymous]
         [Route("/api/[controller]/UpdateCategory")]
         public async Task<IActionResult> PutAsync([FromQuery] string Id, [FromBody] AddCategoryResource putResource)

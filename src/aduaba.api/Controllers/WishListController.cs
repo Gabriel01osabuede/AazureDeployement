@@ -32,7 +32,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles ="User")]
         [Route("/api/[controller]/GetWishListItem")]
         public async Task<List<ShowWishListResource>> GetAllCartAsync()
         {
@@ -80,6 +80,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpDelete]
+        [Authorize(Roles ="User")]
         [Route("/api/[controller]/RemoveWishListItem")]
         public async Task<IActionResult> RemoveCartItem([FromQuery] string ProductId)
         {

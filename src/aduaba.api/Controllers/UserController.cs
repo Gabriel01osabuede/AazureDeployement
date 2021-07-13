@@ -109,8 +109,7 @@ namespace aduaba.api.Controllers
         }
 
         [HttpPut]
-        //[Authorize(Roles = "User")]
-        [AllowAnonymous]
+        [Authorize(Roles = "User")]
         [Route("/api/[controller]/UpdateUser")]
         public async Task<IActionResult> UpdateUserAsync([FromQuery] string Id, [FromBody] UpdateUser model)
         {
